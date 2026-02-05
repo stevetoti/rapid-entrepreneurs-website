@@ -3,10 +3,10 @@
   "/contact/page": "app/contact/page.js",
   "/page": "app/page.js",
   "/blog/page": "app/blog/page.js",
-  "/products/page": "app/products/page.js",
   "/services/page": "app/services/page.js",
   "/success-stories/page": "app/success-stories/page.js",
   "/terms/page": "app/terms/page.js",
-  "/about/page": "app/about/page.js",
-  "/privacy/page": "app/privacy/page.js"
+  "/products/page": "app/products/page.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/about/page": "app/about/page.js"
 }
