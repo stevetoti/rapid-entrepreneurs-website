@@ -1,10 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -17,16 +27,31 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-white/95 backdrop-blur-xl shadow-lg'
+          : 'bg-transparent'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-vibrant-orange rounded-lg flex items-center justify-center">
+          <Link href="/" className="flex items-center space-x-3 group">
+            <motion.div
+              className="w-10 h-10 bg-gradient-to-br from-vibrant-orange to-orange-600 rounded-lg flex items-center justify-center shadow-lg"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ duration: 0.2 }}
+            >
               <span className="text-white font-bold text-xl">R</span>
-            </div>
+            </motion.div>
             <div>
-              <span className="font-display font-bold text-xl text-deep-blue">Rapid</span>
+              <span className={`font-display font-bold text-xl transition-colors ${
+                isScrolled ? 'text-deep-blue' : 'text-white'
+              }`}>Rapid</span>
               <span className="font-display font-bold text-xl text-vibrant-orange"> Entrepreneurs</span>
             </div>
           </Link>
@@ -37,57 +62,86 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-gray-700 hover:text-vibrant-orange font-medium transition-colors duration-200"
+                className={`relative font-medium transition-colors duration-200 group ${
+                  isScrolled ? 'text-gray-700 hover:text-vibrant-orange' : 'text-white/90 hover:text-white'
+                }`}
               >
                 {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-vibrant-orange transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
-            <Link href="/contact" className="btn-primary text-sm px-6 py-3">
-              Get Started
-            </Link>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link href="/contact" className="btn-primary text-sm px-6 py-3">
+                Get Started
+              </Link>
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
+          <motion.button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className={`lg:hidden p-2 rounded-lg transition-colors ${
+              isScrolled ? 'hover:bg-gray-100' : 'hover:bg-white/10'
+            }`}
             aria-label="Toggle menu"
+            whileTap={{ scale: 0.9 }}
           >
-            <svg className="w-6 h-6 text-deep-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-6 h-6 ${isScrolled ? 'text-deep-blue' : 'text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               ) : (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               )}
             </svg>
-          </button>
+          </motion.button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="lg:hidden bg-white border-t shadow-lg animate-slide-up">
-          <div className="px-4 py-6 space-y-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="block text-gray-700 hover:text-vibrant-orange font-medium py-2 transition-colors"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden bg-white border-t shadow-xl overflow-hidden"
+          >
+            <div className="px-4 py-6 space-y-2">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block text-gray-700 hover:text-vibrant-orange font-medium py-3 px-4 rounded-lg hover:bg-vibrant-orange/5 transition-all"
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navLinks.length * 0.05 }}
+                className="pt-4"
               >
-                {link.label}
-              </Link>
-            ))}
-            <Link
-              href="/contact"
-              onClick={() => setIsOpen(false)}
-              className="btn-primary w-full text-center text-sm px-6 py-3 mt-4"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      )}
-    </nav>
+                <Link
+                  href="/contact"
+                  onClick={() => setIsOpen(false)}
+                  className="btn-primary w-full text-center text-sm px-6 py-3"
+                >
+                  Get Started
+                </Link>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   )
 }
