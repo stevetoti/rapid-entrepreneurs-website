@@ -23,7 +23,6 @@ export default function Navbar() {
     { href: '/about', label: 'About' },
     { href: '/success-stories', label: 'Success Stories' },
     { href: '/blog', label: 'Blog' },
-    { href: '/contact', label: 'Contact' },
   ]
 
   return (
@@ -71,8 +70,8 @@ export default function Navbar() {
               </Link>
             ))}
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/contact" className="btn-primary text-sm px-6 py-3">
-                Get Started
+              <Link href="/get-started" className="btn-primary text-sm px-6 py-3">
+                Free Consultation
               </Link>
             </motion.div>
           </div>
@@ -131,11 +130,11 @@ export default function Navbar() {
                 className="pt-4"
               >
                 <Link
-                  href="/contact"
+                  href="/get-started"
                   onClick={() => setIsOpen(false)}
                   className="btn-primary w-full text-center text-sm px-6 py-3"
                 >
-                  Get Started
+                  Free Consultation
                 </Link>
               </motion.div>
             </div>

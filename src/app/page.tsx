@@ -225,7 +225,7 @@ export default function HomePage() {
             <FadeIn delay={0.4}>
               <div className="flex flex-col sm:flex-row gap-4">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href="/contact" className="btn-primary text-lg group">
+                  <Link href="/get-started" className="btn-primary text-lg group">
                     Start Your Project
                     <motion.svg 
                       className="w-5 h-5 ml-2" 
@@ -616,7 +616,7 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/contact" className="inline-flex items-center justify-center px-8 py-4 bg-white text-vibrant-orange font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg text-lg">
+                <Link href="/get-started" className="inline-flex items-center justify-center px-8 py-4 bg-white text-vibrant-orange font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg text-lg">
                   Get a Free Consultation
                 </Link>
               </motion.div>
