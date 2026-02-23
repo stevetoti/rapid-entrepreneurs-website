@@ -5,6 +5,9 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// Site ID for multi-tenant support
+export const SITE_ID = 'rapid-entrepreneurs';
+
 // Types for our blog system
 export interface BlogPost {
   id: string;
