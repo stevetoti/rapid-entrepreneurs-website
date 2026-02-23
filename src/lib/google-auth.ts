@@ -10,7 +10,7 @@ export interface TokenData {
  * Get a valid access token, refreshing if necessary
  */
 export async function getValidAccessToken(): Promise<string | null> {
-  const settings = await getAllSettings('pwd');
+  const settings = await getAllSettings('rapid-entrepreneurs');
   
   const refreshToken = settings['google_refresh_token'];
   const accessToken = settings['google_access_token'];
@@ -56,9 +56,9 @@ export async function getValidAccessToken(): Promise<string | null> {
     }
 
     // Store new access token
-    await upsertSetting('google_access_token', data.access_token, 'pwd');
+    await upsertSetting('google_access_token', data.access_token, 'rapid-entrepreneurs');
     const newExpiresAt = Date.now() + (data.expires_in * 1000);
-    await upsertSetting('google_token_expires_at', newExpiresAt.toString(), 'pwd');
+    await upsertSetting('google_token_expires_at', newExpiresAt.toString(), 'rapid-entrepreneurs');
 
     return data.access_token;
   } catch (error) {
@@ -71,6 +71,6 @@ export async function getValidAccessToken(): Promise<string | null> {
  * Check if Google is connected
  */
 export async function isGoogleConnected(): Promise<boolean> {
-  const settings = await getAllSettings('pwd');
+  const settings = await getAllSettings('rapid-entrepreneurs');
   return !!settings['google_refresh_token'];
 }
