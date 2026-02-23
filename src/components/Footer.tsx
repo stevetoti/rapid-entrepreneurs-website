@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 const footerLinks = {
@@ -24,6 +25,13 @@ const footerLinks = {
     { label: 'Terms of Service', href: '/terms' },
   ],
 }
+
+const globalNetwork = [
+  { flag: '🇻🇺', name: 'Pacific Wave Digital', location: 'Vanuatu', url: 'https://pacificwavedigital.com', tagline: 'Digital Innovation for the Pacific', logo: '/images/logos/pwd-logo.jpg' },
+  { flag: '🇺🇸', name: 'Global Digital Prime', location: 'USA', url: 'https://globaldigitalprime.com', tagline: 'Enterprise Digital Solutions', logo: '/images/logos/gdp-logo.jpg' },
+  { flag: '🇬🇭', name: 'Rapid Entrepreneurs', location: 'Ghana', url: 'https://rapidentrepreneurs.com', tagline: 'Empowering African Business', logo: '/images/logos/rapid-logo.jpg' },
+  { flag: '🇮🇩', name: 'Global Digital Prime', location: 'Indonesia', url: 'https://globaldigitalprime.com', tagline: 'Southeast Asia Operations', logo: '/images/logos/gdp-logo.jpg' },
+]
 
 const socialLinks = [
   {
@@ -73,20 +81,94 @@ const socialLinks = [
   },
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+}
+
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-b from-deep-blue to-dark-navy text-white">
+      {/* Global Network Section */}
+      <div className="border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h3 className="text-2xl md:text-3xl font-bold font-display mb-3">Our Global Network</h3>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              A connected ecosystem of digital innovation companies spanning the Pacific, Americas, Southeast Asia, and Africa.
+            </p>
+          </motion.div>
+          
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {globalNetwork.map((company) => (
+              <motion.a
+                key={`${company.name}-${company.location}`}
+                variants={itemVariants}
+                href={company.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group bg-white/5 backdrop-blur-sm rounded-xl p-6 hover:bg-white/10 transition-all duration-300 border border-white/5 hover:border-vibrant-orange/30"
+                whileHover={{ y: -5, scale: 1.02 }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
+                    <Image
+                      src={company.logo}
+                      alt={company.name}
+                      width={40}
+                      height={40}
+                      className="rounded-lg"
+                    />
+                  </motion.div>
+                  <span className="text-2xl">{company.flag}</span>
+                </div>
+                <h4 className="font-bold text-lg mb-1 group-hover:text-vibrant-orange transition-colors">
+                  {company.name}
+                </h4>
+                <p className="text-gray-400 text-sm mb-2">{company.location}</p>
+                <p className="text-gray-500 text-xs italic">{company.tagline}</p>
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center space-x-3 mb-6">
-              <motion.div
-                className="w-12 h-12 bg-gradient-to-br from-vibrant-orange to-orange-600 rounded-xl flex items-center justify-center shadow-lg"
-                whileHover={{ scale: 1.1, rotate: 5 }}
-              >
-                <span className="text-white font-bold text-2xl">R</span>
+              <motion.div whileHover={{ scale: 1.1, rotate: 5 }}>
+                <Image
+                  src="/images/logos/rapid-logo.jpg"
+                  alt="Rapid Entrepreneurs"
+                  width={48}
+                  height={48}
+                  className="rounded-xl shadow-lg"
+                />
               </motion.div>
               <div>
                 <span className="font-display font-bold text-xl text-white">Rapid</span>
@@ -202,17 +284,9 @@ export default function Footer() {
             <p className="text-gray-500 text-sm text-center md:text-left">
               © {new Date().getFullYear()} Rapid Entrepreneurs. All rights reserved.
             </p>
-            <div className="flex items-center gap-6">
-              {footerLinks.legal.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-gray-500 text-sm hover:text-vibrant-orange transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+            <p className="text-gray-500 text-sm flex items-center gap-2">
+              Crafted with <span className="text-vibrant-orange">❤️</span> in Accra, Ghana 🇬🇭
+            </p>
           </div>
         </div>
       </div>

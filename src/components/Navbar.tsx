@@ -41,11 +41,16 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
             <motion.div
-              className="w-11 h-11 bg-gradient-to-br from-vibrant-orange to-orange-600 rounded-xl flex items-center justify-center shadow-lg"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-white font-bold text-2xl">R</span>
+              <Image
+                src="/images/logos/rapid-logo.jpg"
+                alt="Rapid Entrepreneurs"
+                width={44}
+                height={44}
+                className="rounded-xl shadow-lg"
+              />
             </motion.div>
             <div className="hidden sm:block">
               <span className={`font-display font-bold text-xl transition-colors ${
