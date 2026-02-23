@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { isGoogleConnected } from '@/lib/google-auth';
-import { getAllSettings } from '@/lib/supabase';
+import { getAllSettings, SITE_ID } from '@/lib/supabase';
 
 export async function GET() {
   try {
     const connected = await isGoogleConnected();
-    const settings = await getAllSettings('pwd');
+    const settings = await getAllSettings(SITE_ID);
     
     return NextResponse.json({
       connected,

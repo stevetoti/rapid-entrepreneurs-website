@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllSettings, upsertSetting } from '@/lib/supabase';
+import { getAllSettings, upsertSetting, SITE_ID } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get credentials from settings
-    const settings = await getAllSettings('pwd');
+    const settings = await getAllSettings(SITE_ID);
     const clientId = settings['google_client_id'];
     const clientSecret = settings['google_client_secret'];
 
@@ -66,14 +66,14 @@ export async function GET(request: NextRequest) {
 
     // Store refresh token in site_settings
     if (tokens.refresh_token) {
-      await upsertSetting('google_refresh_token', tokens.refresh_token, 'pwd');
+      await upsertSetting('google_refresh_token', tokens.refresh_token, SITE_ID);
     }
 
     // Also store access token and expiry for immediate use
     if (tokens.access_token) {
-      await upsertSetting('google_access_token', tokens.access_token, 'pwd');
+      await upsertSetting('google_access_token', tokens.access_token, SITE_ID);
       const expiresAt = Date.now() + (tokens.expires_in * 1000);
-      await upsertSetting('google_token_expires_at', expiresAt.toString(), 'pwd');
+      await upsertSetting('google_token_expires_at', expiresAt.toString(), SITE_ID);
     }
 
     // Redirect back to analytics with success

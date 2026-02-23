@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+const SITE_ID = 'rapid-entrepreneurs';
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -124,7 +126,7 @@ Don't let your competition dominate the search results. Contact Pacific Wave Dig
       const { data: post, error: insertError } = await supabase
         .from('blog_posts')
         .insert({
-          site_id: 'pwd',
+          site_id: SITE_ID,
           title: fallbackContent.title,
           slug: slug + '-' + Date.now(),
           excerpt: fallbackContent.excerpt,
@@ -197,7 +199,7 @@ Don't let your competition dominate the search results. Contact Pacific Wave Dig
     const { data: post, error: insertError } = await supabase
       .from('blog_posts')
       .insert({
-        site_id: 'pwd',
+        site_id: SITE_ID,
         title: articleData.title,
         slug: slug + '-' + Date.now(),
         excerpt: articleData.excerpt,
@@ -219,7 +221,7 @@ Don't let your competition dominate the search results. Contact Pacific Wave Dig
       .from('seo_content_opportunities')
       .update({ status: 'writing' })
       .eq('keyword', keyword)
-      .eq('site_id', 'pwd');
+      .eq('site_id', SITE_ID);
 
     return NextResponse.json({
       success: true,

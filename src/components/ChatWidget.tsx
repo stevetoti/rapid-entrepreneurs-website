@@ -1,137 +1,122 @@
 'use client'
 
-import { useState } from 'react'
-
-const faqs = [
-  { q: 'What services do you offer?', a: 'We offer web development, mobile apps, e-commerce solutions, digital marketing, fintech/mobile money integration, and AI solutions tailored for African businesses.' },
-  { q: 'Where are you located?', a: 'Our main office is at 14 Independence Avenue, East Legon, Accra, Ghana. We serve businesses across all of West Africa.' },
-  { q: 'Do you support mobile money?', a: 'Yes! We specialize in mobile money integration including MTN MoMo, Vodafone Cash, and AirtelTigo Money for seamless payments.' },
-  { q: 'What is Akwaaba AI?', a: 'Akwaaba AI is our AI-powered business communication platform designed specifically for African businesses. It handles customer inquiries in multiple local languages.' },
-  { q: 'How can I get started?', a: 'Simply visit our Contact page or send us a message here! We offer free consultations for all new projects.' },
-]
+import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
 
 export default function ChatWidget() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Array<{ role: string; text: string }>>([
-    { role: 'bot', text: 'Akwaaba! 👋 Welcome to Rapid Entrepreneurs. How can we help your business grow today?' }
-  ])
-  const [showFaqs, setShowFaqs] = useState(true)
+  const [showTooltips, setShowTooltips] = useState(false)
+  const [isElevenLabsOpen, setIsElevenLabsOpen] = useState(false)
+  const elevenLabsRef = useRef<HTMLDivElement>(null)
 
-  const handleFaq = (faq: typeof faqs[0]) => {
-    setMessages(prev => [
-      ...prev,
-      { role: 'user', text: faq.q },
-      { role: 'bot', text: faq.a }
-    ])
-    setShowFaqs(false)
-  }
+  useEffect(() => {
+    // Load ElevenLabs convai widget script
+    const script = document.createElement('script')
+    script.src = 'https://elevenlabs.io/convai-widget/index.js'
+    script.async = true
+    document.body.appendChild(script)
 
-  const resetChat = () => {
-    setMessages([{ role: 'bot', text: 'Akwaaba! 👋 Welcome to Rapid Entrepreneurs. How can we help your business grow today?' }])
-    setShowFaqs(true)
+    return () => {
+      const existingScript = document.querySelector('script[src="https://elevenlabs.io/convai-widget/index.js"]')
+      if (existingScript) {
+        existingScript.remove()
+      }
+    }
+  }, [])
+
+  const toggleElevenLabs = () => {
+    setIsElevenLabsOpen(!isElevenLabsOpen)
+    
+    // Try to programmatically open/close the ElevenLabs widget
+    const widget = document.querySelector('elevenlabs-convai')
+    if (widget) {
+      // ElevenLabs widget typically has a shadow DOM, try to trigger it
+      const shadowRoot = (widget as HTMLElement).shadowRoot
+      if (shadowRoot) {
+        const button = shadowRoot.querySelector('button')
+        if (button) {
+          button.click()
+        }
+      }
+    }
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-      {/* Chat Window */}
-      {isOpen && (
-        <div 
-          className="w-[350px] max-w-[calc(100vw-3rem)] bg-white rounded-2xl shadow-2xl border border-gray-200 animate-slide-up overflow-hidden"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="bg-gradient-to-r from-deep-blue to-deep-blue/90 px-5 py-4 flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-vibrant-orange rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-bold">R</span>
-              </div>
-              <div>
-                <h4 className="text-white font-semibold text-sm">Rapid Entrepreneurs</h4>
-                <p className="text-green-300 text-xs flex items-center gap-1">
-                  <span className="w-2 h-2 bg-green-400 rounded-full inline-block"></span>
-                  Online
-                </p>
-              </div>
-            </div>
-            <button onClick={resetChat} className="text-white/60 hover:text-white transition-colors" title="Reset chat">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-            </button>
-          </div>
-
-          {/* Messages */}
-          <div className="h-72 overflow-y-auto p-4 space-y-3 bg-gray-50">
-            {messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                  msg.role === 'user'
-                    ? 'bg-vibrant-orange text-white rounded-br-md'
-                    : 'bg-white text-gray-700 shadow-sm border border-gray-100 rounded-bl-md'
-                }`}>
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-
-            {/* FAQ Buttons */}
-            {showFaqs && (
-              <div className="space-y-2 pt-2">
-                <p className="text-xs text-gray-500 font-medium">Quick questions:</p>
-                {faqs.map((faq, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleFaq(faq)}
-                    className="block w-full text-left text-sm bg-white border border-gray-200 rounded-xl px-4 py-2.5 hover:border-vibrant-orange hover:text-vibrant-orange transition-colors"
-                  >
-                    {faq.q}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {!showFaqs && (
-              <button
-                onClick={() => setShowFaqs(true)}
-                className="text-sm text-vibrant-orange hover:underline"
-              >
-                Show more questions
-              </button>
-            )}
-          </div>
-
-          {/* Footer */}
-          <div className="px-4 py-3 bg-white border-t border-gray-100">
-            <div className="flex items-center gap-2">
-              <a
-                href="/contact"
-                className="flex-1 text-center bg-vibrant-orange text-white text-sm font-medium py-2.5 rounded-xl hover:bg-orange-600 transition-colors"
-              >
-                Send us a message
-              </a>
-            </div>
-            <p className="text-[10px] text-gray-400 text-center mt-2">Powered by Akwaaba AI</p>
-          </div>
-        </div>
-      )}
-
-      {/* Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="relative w-14 h-14 bg-vibrant-orange rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
-        aria-label="Chat with us"
+    <>
+      {/* Floating Action Buttons */}
+      <div 
+        className="fixed bottom-6 right-6 z-[60] flex flex-col-reverse gap-3 items-end"
+        onMouseEnter={() => setShowTooltips(true)}
+        onMouseLeave={() => setShowTooltips(false)}
       >
-        {!isOpen && (
-          <span className="absolute inset-0 rounded-full bg-vibrant-orange animate-pulse-ring"></span>
-        )}
-        {isOpen ? (
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        ) : (
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-        )}
-      </button>
-    </div>
+        {/* Chat Button - Orange - Triggers ElevenLabs */}
+        <div className="relative flex items-center">
+          {showTooltips && (
+            <span className="absolute right-16 whitespace-nowrap bg-gray-900 text-white text-sm px-3 py-2 rounded-lg shadow-lg animate-fade-in">
+              Chat with us
+              <span className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 border-8 border-transparent border-l-gray-900"></span>
+            </span>
+          )}
+          <button
+            onClick={toggleElevenLabs}
+            className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+              isElevenLabsOpen 
+                ? 'bg-gray-600' 
+                : 'bg-vibrant-orange hover:bg-orange-500'
+            }`}
+            aria-label={isElevenLabsOpen ? "Close chat" : "Open chat"}
+          >
+            {isElevenLabsOpen ? (
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        {/* Phone Button - Blue */}
+        <div className="relative flex items-center">
+          {showTooltips && (
+            <span className="absolute right-16 whitespace-nowrap bg-gray-900 text-white text-sm px-3 py-2 rounded-lg shadow-lg animate-fade-in">
+              Call us now
+              <span className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 border-8 border-transparent border-l-gray-900"></span>
+            </span>
+          )}
+          <Link
+            href="tel:+233554303269"
+            className="w-14 h-14 bg-deep-blue hover:bg-blue-700 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl"
+            aria-label="Call us"
+          >
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+          </Link>
+        </div>
+      </div>
+
+      {/* Hidden ElevenLabs Widget - positioned behind our buttons */}
+      <div 
+        ref={elevenLabsRef}
+        className={`fixed bottom-24 right-6 z-[55] transition-all duration-300 ${
+          isElevenLabsOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+      >
+        {/* @ts-expect-error - Custom element from ElevenLabs */}
+        <elevenlabs-convai agent-id="agent_4501kgqzyj13fjav2d5yw54fs4m5" />
+      </div>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateX(10px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.2s ease-out;
+        }
+      `}</style>
+    </>
   )
 }

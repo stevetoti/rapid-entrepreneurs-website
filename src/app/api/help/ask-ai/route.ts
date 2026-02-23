@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+
+const SITE_ID = 'rapid-entrepreneurs';
 import OpenAI from 'openai';
 
 const supabase = createClient(
@@ -22,7 +24,7 @@ async function generateQueryEmbedding(text: string): Promise<number[]> {
 
 export async function POST(request: NextRequest) {
   try {
-    const { question, siteId = 'pwd' } = await request.json();
+    const { question, siteId = SITE_ID } = await request.json();
     
     if (!question || question.trim().length === 0) {
       return NextResponse.json({ success: false, error: 'Question is required' }, { status: 400 });

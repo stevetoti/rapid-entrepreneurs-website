@@ -3,7 +3,6 @@ import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ChatWidget from '@/components/ChatWidget'
-import VoiceWidget from '@/components/VoiceWidget'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rapidentrepreneurs.com'),
@@ -82,7 +81,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <Footer />
-        <VoiceWidget />
         <ChatWidget />
       </body>
     </html>

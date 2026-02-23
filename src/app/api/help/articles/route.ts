@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+const SITE_ID = 'rapid-entrepreneurs';
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -10,7 +12,7 @@ const supabase = createClient(
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const siteId = searchParams.get('siteId') || 'pwd';
+    const siteId = searchParams.get('siteId') || SITE_ID;
     const category = searchParams.get('category');
     const published = searchParams.get('published');
     const limit = parseInt(searchParams.get('limit') || '50');
@@ -50,7 +52,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { title, content, category, tags, related_feature, is_published, siteId = 'pwd' } = body;
+    const { title, content, category, tags, related_feature, is_published, siteId = SITE_ID } = body;
 
     if (!title || !content || !category) {
       return NextResponse.json({ 

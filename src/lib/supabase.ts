@@ -1,9 +1,17 @@
-import { createClient, User, Session, AuthError } from '@supabase/supabase-js';
+import { createClient, User, Session, AuthError, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Lazy-initialize supabase client to handle build-time when env vars may not be available
+let _supabase: SupabaseClient | null = null;
+
+export const supabase = (() => {
+  if (!_supabase && supabaseUrl && supabaseAnonKey) {
+    _supabase = createClient(supabaseUrl, supabaseAnonKey);
+  }
+  return _supabase || createClient(supabaseUrl || 'https://placeholder.supabase.co', supabaseAnonKey || 'placeholder');
+})();
 
 // Site ID for multi-tenant support
 export const SITE_ID = 'rapid-entrepreneurs';

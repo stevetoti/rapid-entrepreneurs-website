@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { getAllSettings } from '@/lib/supabase';
+import { getAllSettings, SITE_ID } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    const settings = await getAllSettings('pwd');
+    const settings = await getAllSettings(SITE_ID);
     const clientId = settings['google_client_id'];
     
     if (!clientId) {

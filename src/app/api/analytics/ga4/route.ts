@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getValidAccessToken } from '@/lib/google-auth';
-import { getAllSettings, upsertSetting } from '@/lib/supabase';
+import { getAllSettings, upsertSetting, SITE_ID } from '@/lib/supabase';
 
 // Disable caching for this route
 export const dynamic = 'force-dynamic';
@@ -89,7 +89,7 @@ async function getPropertyId(settings: Record<string, string>, accessToken: stri
           console.log(`[GA4] Found property ID: ${propertyId} for measurement ID: ${measurementId}`);
           
           // Cache the property ID for future requests
-          await upsertSetting('google_analytics_property_id', propertyId, 'pwd');
+          await upsertSetting('google_analytics_property_id', propertyId, SITE_ID);
           console.log(`[GA4] Cached property ID in database`);
           
           return propertyId;
@@ -116,7 +116,7 @@ export async function GET() {
       );
     }
 
-    const settings = await getAllSettings('pwd');
+    const settings = await getAllSettings(SITE_ID);
     console.log('[GA4] Settings loaded:', Object.keys(settings));
     console.log('[GA4] google_analytics_property_id:', settings['google_analytics_property_id']);
     console.log('[GA4] google_analytics_id:', settings['google_analytics_id']);

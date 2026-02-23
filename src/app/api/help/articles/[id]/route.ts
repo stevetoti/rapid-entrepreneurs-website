@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+const SITE_ID = 'rapid-entrepreneurs';
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -14,7 +16,7 @@ export async function GET(
   try {
     const { id } = await params;
     const { searchParams } = new URL(request.url);
-    const siteId = searchParams.get('siteId') || 'pwd';
+    const siteId = searchParams.get('siteId') || SITE_ID;
     const bySlug = searchParams.get('bySlug') === 'true';
     const incrementView = searchParams.get('view') === 'true';
 
