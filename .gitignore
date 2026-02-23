@@ -3,3 +3,10 @@ node_modules/
 .vercel/
 out/
 .vercel
+.env
+.env.*
+.env.local
+.env.production
+.env.development
+*.pem
+*.key

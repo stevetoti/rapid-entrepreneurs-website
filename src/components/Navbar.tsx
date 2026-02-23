@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Navbar() {
@@ -19,10 +20,9 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/services', label: 'Services' },
-    { href: '/products', label: 'Products' },
     { href: '/about', label: 'About' },
     { href: '/success-stories', label: 'Success Stories' },
-    { href: '/blog', label: 'Blog' },
+    { href: '/contact', label: 'Contact' },
   ]
 
   return (
@@ -41,13 +41,13 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
             <motion.div
-              className="w-10 h-10 bg-gradient-to-br from-vibrant-orange to-orange-600 rounded-lg flex items-center justify-center shadow-lg"
+              className="w-11 h-11 bg-gradient-to-br from-vibrant-orange to-orange-600 rounded-xl flex items-center justify-center shadow-lg"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-white font-bold text-xl">R</span>
+              <span className="text-white font-bold text-2xl">R</span>
             </motion.div>
-            <div>
+            <div className="hidden sm:block">
               <span className={`font-display font-bold text-xl transition-colors ${
                 isScrolled ? 'text-deep-blue' : 'text-white'
               }`}>Rapid</span>
