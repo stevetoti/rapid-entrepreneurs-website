@@ -35,7 +35,7 @@ const websiteImages: Record<string, SiteImage[]> = {
     { id: 'tech-office', name: 'Tech Office', path: '/images/tech-office.jpg', description: 'Modern office environment', dimensions: '600x400', section: 'About Section' },
   ],
   'Contact & Location': [
-    { id: 'port-vila', name: 'Port Vila', path: '/images/port-vila.jpg', description: 'Port Vila, Vanuatu location image', dimensions: '800x600', section: 'Contact Page' },
+    { id: 'accra', name: 'Accra', path: '/images/accra.jpg', description: 'Accra, Ghana location image', dimensions: '800x600', section: 'Contact Page' },
     { id: 'business-handshake', name: 'Business Handshake', path: '/images/business-handshake.jpg', description: 'Partnership/collaboration image', dimensions: '600x400', section: 'Contact/CTA' },
   ],
   'Partner Logos': [

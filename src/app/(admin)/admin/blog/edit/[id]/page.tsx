@@ -374,12 +374,12 @@ export default function EditBlogPost() {
         // From API result (if available and short enough)
         result.title,
         // Template-based titles optimized for length
-        `${category} in Vanuatu: A Complete Guide`,
+        `${category} in Ghana: A Complete Guide`,
         `${year} Guide to ${category} Success`,
-        `Why ${category} Matters in the Pacific`,
-        `How to Master ${category} in Vanuatu`,
-        `${category} Tips for Pacific Businesses`,
-        `The Future of ${category} in Vanuatu`,
+        `Why ${category} Matters in West Africa`,
+        `How to Master ${category} in Ghana`,
+        `${category} Tips for West African Businesses`,
+        `The Future of ${category} in Ghana`,
         `Essential ${category} Strategies for ${year}`,
         `${category}: What You Need to Know`,
         `Grow Your Business with ${category}`,
@@ -557,7 +557,7 @@ export default function EditBlogPost() {
       const result = await callSEOFunction('seo-keyword-research', {
         topic: formData.title || 'blog post',
         industry: formData.category || 'Technology',
-        location: 'Pacific Islands',
+        location: 'West Africa',
         maxKeywords: 8,
       });
       
@@ -683,7 +683,7 @@ export default function EditBlogPost() {
       
       // Add location context if there's room
       if (altText.length < 100) {
-        altText += ' in Vanuatu';
+        altText += ' in Ghana';
       }
       
       setSuggestedAltText(altText);

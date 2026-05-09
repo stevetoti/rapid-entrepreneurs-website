@@ -280,7 +280,7 @@ export default function NewBlogPost() {
               className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-deep-blue/20 text-sm"
             />
             <p className="text-gray-400 text-xs mt-2">
-              e.g., AI automation Pacific, web development Vanuatu
+              e.g., AI automation Ghana, web development Accra
             </p>
           </div>
         </div>

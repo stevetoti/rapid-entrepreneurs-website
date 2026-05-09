@@ -17,20 +17,20 @@ interface Transcript {
 const sampleTranscripts: Transcript[] = [
   {
     id: '1',
-    title: 'VanuConnect Product Demo',
-    client: 'Air Vanuatu',
+    title: 'ConnectGH Platform Demo',
+    client: 'MTN Ghana',
     type: 'meeting',
     date: 'Feb 20, 2026',
     duration: '45 min',
-    summary: 'Demonstrated VanuConnect communication platform features to Air Vanuatu IT team.',
+    summary: 'Demonstrated ConnectGH communication platform features to MTN Ghana IT team.',
     content: `Meeting Notes:
-    
-Attendees: John (Air Vanuatu IT), Sarah (Marketing), Stephen (Rapid Entrepreneurs)
+
+Attendees: John (MTN Ghana IT), Sarah (Marketing), Stephen (Rapid Entrepreneurs)
 
 Key Points Discussed:
 - Showed multi-channel communication features (WhatsApp, SMS, Email)
 - Demonstrated AI chatbot capabilities
-- Discussed integration with existing booking systems
+- Discussed integration with existing systems
 - Pricing tier options reviewed
 
 Action Items:
