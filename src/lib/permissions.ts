@@ -1,4 +1,4 @@
-// Role-based access control for Pacific Wave Digital admin panel
+// Role-based access control for Rapid Entrepreneurs admin panel
 
 export type Role = 'super_admin' | 'admin' | 'editor' | 'viewer';
 

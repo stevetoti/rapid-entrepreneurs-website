@@ -17,10 +17,10 @@ const quickActions = [
 ];
 
 const recentPosts = [
-  { title: 'AI Business Automation for Pacific Island Enterprises', status: 'Published', date: 'Feb 15, 2026' },
-  { title: 'Why Every Vanuatu Business Needs a Professional Website', status: 'Published', date: 'Feb 10, 2026' },
-  { title: 'Mobile App Development for Pacific Island Businesses', status: 'Published', date: 'Feb 5, 2026' },
-  { title: 'Digital Marketing Strategies for Pacific Island SMEs', status: 'Published', date: 'Jan 28, 2026' },
+  { title: 'AI Business Automation for West African Enterprises', status: 'Published', date: 'Feb 15, 2026' },
+  { title: 'Why Every Ghanaian Business Needs a Professional Website', status: 'Published', date: 'Feb 10, 2026' },
+  { title: 'Mobile App Development for West African Businesses', status: 'Published', date: 'Feb 5, 2026' },
+  { title: 'Digital Marketing Strategies for West African SMEs', status: 'Published', date: 'Jan 28, 2026' },
 ];
 
 export default function AdminDashboard() {
