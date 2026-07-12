@@ -27,10 +27,10 @@ const footerLinks = {
 }
 
 const globalNetwork = [
-  { flag: '🇻🇺', name: 'Pacific Wave Digital', location: 'Vanuatu', url: 'https://pacificwavedigital.com', tagline: 'Digital Innovation for the Pacific', logo: '/images/logos/pwd-logo.jpg' },
-  { flag: '🇺🇸', name: 'Global Digital Prime', location: 'USA', url: 'https://globaldigitalprime.com', tagline: 'Enterprise Digital Solutions', logo: '/images/logos/gdp-logo.jpg' },
-  { flag: '🇬🇭', name: 'Rapid Entrepreneurs', location: 'Ghana', url: 'https://rapidentrepreneurs.com', tagline: 'Empowering African Business', logo: '/images/logos/rapid-logo.jpg' },
-  { flag: '🇮🇩', name: 'Global Digital Prime', location: 'Indonesia', url: 'https://globaldigitalprime.com', tagline: 'Southeast Asia Operations', logo: '/images/logos/gdp-logo.jpg' },
+  { flag: '🇻🇺', name: 'Pacific Wave Digital', location: 'Vanuatu (HQ)', url: 'https://pacificwavedigital.com', tagline: 'Digital Innovation for the Pacific', regions: 'Covers: Vanuatu · Pacific Islands · Oceania', logo: '/images/logos/pwd-logo.jpg' },
+  { flag: '🇺🇸', name: 'Global Digital Prime', location: 'Delaware, USA', url: 'https://globaldigitalprime.com', tagline: 'Enterprise Digital Solutions', regions: 'Covers: United States · Americas · Global Enterprise', logo: '/images/logos/gdp-logo.jpg' },
+  { flag: '🇬🇭', name: 'Rapid Entrepreneurs', location: 'Ghana', url: 'https://rapidentrepreneurs.com', tagline: 'Empowering African Business', regions: 'Covers: Ghana · West Africa · African Markets', logo: '/images/logos/rapid-logo.jpg' },
+  { flag: '🇮🇩', name: 'Global Digital Prime', location: 'Indonesia', url: 'https://globaldigitalprime.com', tagline: 'Southeast Asia Operations', regions: 'Covers: Indonesia · Southeast Asia · Asia-Pacific', logo: '/images/logos/gdp-logo.jpg' },
 ]
 
 const socialLinks = [

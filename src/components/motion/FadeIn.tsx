@@ -1,7 +1,6 @@
 'use client'
 
-import { motion, Variants } from 'framer-motion'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 
 interface FadeInProps {
   children: ReactNode
@@ -13,6 +12,9 @@ interface FadeInProps {
   once?: boolean
 }
 
+// Progressive-enhancement reveal: the server renders content fully visible,
+// so it never disappears if JavaScript or animations fail. After hydration,
+// elements below the fold are hidden and animated in when they scroll into view.
 export default function FadeIn({
   children,
   delay = 0,
@@ -22,41 +24,62 @@ export default function FadeIn({
   viewport = true,
   once = true,
 }: FadeInProps) {
-  const directionOffset = {
-    up: { y: 40 },
-    down: { y: -40 },
-    left: { x: 40 },
-    right: { x: -40 },
-    none: {},
-  }
+  const ref = useRef<HTMLDivElement>(null)
+  const [hidden, setHidden] = useState(false)
 
-  const variants: Variants = {
-    hidden: {
-      opacity: 0,
-      ...directionOffset[direction],
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      transition: {
-        duration,
-        delay,
-        ease: [0.25, 0.4, 0.25, 1],
+  useEffect(() => {
+    const el = ref.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+
+    if (!viewport) {
+      // Animate immediately on mount
+      setHidden(true)
+      const raf = requestAnimationFrame(() => requestAnimationFrame(() => setHidden(false)))
+      return () => cancelAnimationFrame(raf)
+    }
+
+    const rect = el.getBoundingClientRect()
+    const alreadyInView = rect.top < window.innerHeight * 0.9 && rect.bottom > 0
+    if (alreadyInView) return // keep visible — no flash on above-the-fold content
+
+    setHidden(true)
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setHidden(false)
+            if (once) io.disconnect()
+          } else if (!once) {
+            setHidden(true)
+          }
+        }
       },
-    },
+      { threshold: 0.15 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [viewport, once])
+
+  const offsets: Record<NonNullable<FadeInProps['direction']>, string> = {
+    up: 'translateY(32px)',
+    down: 'translateY(-32px)',
+    left: 'translateX(32px)',
+    right: 'translateX(-32px)',
+    none: 'none',
   }
 
   return (
-    <motion.div
-      initial="hidden"
-      whileInView={viewport ? 'visible' : undefined}
-      animate={!viewport ? 'visible' : undefined}
-      viewport={viewport ? { once, margin: '-50px' } : undefined}
-      variants={variants}
+    <div
+      ref={ref}
       className={className}
+      style={{
+        opacity: hidden ? 0 : 1,
+        transform: hidden ? offsets[direction] : 'none',
+        transition: `opacity ${duration}s cubic-bezier(0.25, 0.4, 0.25, 1) ${delay}s, transform ${duration}s cubic-bezier(0.25, 0.4, 0.25, 1) ${delay}s`,
+        willChange: hidden ? 'opacity, transform' : 'auto',
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }

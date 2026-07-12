@@ -1,7 +1,6 @@
 'use client'
 
-import { motion, useSpring, useTransform, useInView } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface AnimatedCounterProps {
   value: number
@@ -11,6 +10,9 @@ interface AnimatedCounterProps {
   className?: string
 }
 
+// SSR-safe counter: the server renders the FINAL value (so crawlers and
+// no-JS users always see real numbers, never "0+"). After hydration, the
+// count-up animation runs once the element scrolls into view.
 export default function AnimatedCounter({
   value,
   suffix = '',
@@ -19,27 +21,49 @@ export default function AnimatedCounter({
   className = '',
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  const isInView = useInView(ref, { once: true })
-  
-  const spring = useSpring(0, {
-    duration: duration * 1000,
-    bounce: 0,
-  })
-  
-  const display = useTransform(spring, (current) =>
-    Math.floor(current).toLocaleString()
-  )
+  const [display, setDisplay] = useState(value)
+  const startedRef = useRef(false)
 
   useEffect(() => {
-    if (isInView) {
-      spring.set(value)
+    const el = ref.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+
+    const startCount = () => {
+      if (startedRef.current) return
+      startedRef.current = true
+      const t0 = performance.now()
+      const tick = (now: number) => {
+        const progress = Math.min((now - t0) / (duration * 1000), 1)
+        const eased = 1 - Math.pow(1 - progress, 3)
+        setDisplay(Math.round(value * eased))
+        if (progress < 1) requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
     }
-  }, [isInView, spring, value])
+
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      startCount()
+      return
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          startCount()
+          io.disconnect()
+        }
+      },
+      { threshold: 0.3 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [value, duration])
 
   return (
     <span ref={ref} className={className}>
       {prefix}
-      <motion.span>{display}</motion.span>
+      {display.toLocaleString()}
       {suffix}
     </span>
   )
