@@ -22,14 +22,18 @@ export const metadata: Metadata = {
     siteName: 'Rapid Entrepreneurs',
     title: 'Rapid Entrepreneurs — Empowering African Business Growth',
     description: 'Digital solutions company empowering African entrepreneurs and businesses with technology in Ghana and West Africa.',
-    images: [{ url: '/images/hero-african-business.jpg', width: 1920, height: 1080, alt: 'Rapid Entrepreneurs - Digital Solutions for Africa' }],
+    images: [{ url: '/images/og-image.jpg', width: 1200, height: 630, alt: 'Rapid Entrepreneurs — Digital Solutions for Africa' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Rapid Entrepreneurs — Empowering African Business Growth',
     description: 'Digital solutions for African entrepreneurs. Web, mobile, e-commerce, fintech & AI.',
-    images: ['/images/hero-african-business.jpg'],
+    images: ['/images/og-image.jpg'],
     creator: '@rapidghana',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
   robots: {
     index: true,
