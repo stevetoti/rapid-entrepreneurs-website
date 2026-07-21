@@ -537,7 +537,7 @@ export default function AdminSettingsPage() {
             <textarea
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="Port Vila, Vanuatu"
+              placeholder="Accra, Ghana"
               rows={2}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-deep-blue/20 focus:border-deep-blue resize-none"
             />

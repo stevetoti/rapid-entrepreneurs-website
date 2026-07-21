@@ -32,12 +32,12 @@ export async function POST(request: Request) {
       `${i + 1}. ${c.domain} - "${c.title}" (${c.url})`
     ).join('\n');
 
-    const prompt = `You are an expert SEO content writer for Pacific Wave Digital, a leading digital agency in Vanuatu specializing in web development, AI solutions, and digital transformation for Pacific Island businesses.
+    const prompt = `You are an expert SEO content writer for Rapid Entrepreneurs, a leading digital agency in Ghana specializing in web development, AI solutions, and digital transformation for West African businesses.
 
 Write a comprehensive, SEO-optimized blog article targeting the keyword: "${keyword}"
 
 CONTEXT:
-- Target audience: Businesses in Vanuatu and the Pacific Islands
+- Target audience: Businesses in Ghana and West Africa
 - Search volume: ${searchVolume || 'Unknown'} monthly searches
 - Competition difficulty: ${difficulty || 'Unknown'}/100
 - Current top competitors ranking for this keyword:
@@ -49,8 +49,8 @@ REQUIREMENTS:
 3. Include the keyword naturally 5-8 times throughout the article
 4. Structure with clear H2 and H3 headings
 5. Include practical tips, examples, and actionable advice
-6. Reference Vanuatu/Pacific Islands context where relevant
-7. Include a strong call-to-action mentioning Pacific Wave Digital's services
+6. Reference Ghana/West Africa context where relevant
+7. Include a strong call-to-action mentioning Rapid Entrepreneurs' services
 8. Write in a professional but approachable tone
 
 OUTPUT FORMAT (return as JSON):
@@ -66,15 +66,15 @@ Return ONLY valid JSON, no additional text.`;
 
     if (!OPENAI_API_KEY) {
       // Fallback: Create a template article if no OpenAI key
-      const title = `Complete Guide to ${keyword.split(' ').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} in Vanuatu`;
+      const title = `Complete Guide to ${keyword.split(' ').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} in Ghana`;
       const fallbackContent = {
         title,
-        excerpt: `Discover everything you need to know about ${keyword} in Vanuatu. Expert insights from Pacific Wave Digital.`,
+        excerpt: `Discover everything you need to know about ${keyword} in Ghana. Expert insights from Rapid Entrepreneurs.`,
         content: `# ${title}
 
 ## Introduction
 
-If you're looking for expert ${keyword} services in Vanuatu, you've come to the right place. Pacific Wave Digital specializes in delivering top-tier digital solutions for businesses across the Pacific Islands.
+If you're looking for expert ${keyword} services in Ghana, you've come to the right place. Rapid Entrepreneurs specializes in delivering top-tier digital solutions for businesses across West Africa.
 
 ## Why ${keyword.split(' ').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} Matters
 
@@ -82,10 +82,10 @@ In today's digital landscape, ${keyword} has become essential for businesses loo
 
 ## Our Approach
 
-At Pacific Wave Digital, we take a comprehensive approach to ${keyword}, combining:
+At Rapid Entrepreneurs, we take a comprehensive approach to ${keyword}, combining:
 
-- **Local Expertise**: Deep understanding of the Vanuatu market
-- **Global Standards**: International best practices adapted for Pacific businesses
+- **Local Expertise**: Deep understanding of the Ghanaian market
+- **Global Standards**: International best practices adapted for West African businesses
 - **AI-Powered Solutions**: Cutting-edge technology to drive results
 
 ## Key Benefits
@@ -96,13 +96,13 @@ At Pacific Wave Digital, we take a comprehensive approach to ${keyword}, combini
 
 ## Top Competitors Analysis
 
-Our research shows these are the current leaders for "${keyword}" in Vanuatu:
+Our research shows these are the current leaders for "${keyword}" in Ghana:
 
 ${topCompetitors.map((c: Competitor, i: number) => `${i + 1}. **${c.domain}** - ${c.title}`).join('\n')}
 
-## How Pacific Wave Digital Can Help
+## How Rapid Entrepreneurs Can Help
 
-Ready to outrank your competition? Pacific Wave Digital offers:
+Ready to outrank your competition? Rapid Entrepreneurs offers:
 
 - Professional web development
 - SEO optimization
@@ -111,12 +111,12 @@ Ready to outrank your competition? Pacific Wave Digital offers:
 
 ## Conclusion
 
-Don't let your competition dominate the search results. Contact Pacific Wave Digital today to discuss how we can help your business succeed with ${keyword}.
+Don't let your competition dominate the search results. Contact Rapid Entrepreneurs today to discuss how we can help your business succeed with ${keyword}.
 
 ---
 
-*Pacific Wave Digital - Digital Innovation for the Pacific*`,
-        tags: [keyword.split(' ')[0], 'Vanuatu', 'Pacific Wave Digital'],
+*Rapid Entrepreneurs - Digital Innovation for West Africa*`,
+        tags: [keyword.split(' ')[0], 'Ghana', 'Rapid Entrepreneurs'],
         targetKeyword: keyword
       };
 

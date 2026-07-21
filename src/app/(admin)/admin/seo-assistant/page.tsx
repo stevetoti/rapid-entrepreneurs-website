@@ -30,7 +30,7 @@ export default function SEOAssistantPage() {
   // Keyword Suggester State
   const [keywordTopic, setKeywordTopic] = useState('');
   const [keywordIndustry, setKeywordIndustry] = useState('');
-  const [keywordLocation, setKeywordLocation] = useState('Vanuatu');
+  const [keywordLocation, setKeywordLocation] = useState('Ghana');
   const [keywordResult, setKeywordResult] = useState<{ keywords: KeywordSuggestion[]; primaryKeyword: string; secondaryKeywords: string[] } | null>(null);
   const [keywordLoading, setKeywordLoading] = useState(false);
 
@@ -353,7 +353,7 @@ export default function SEOAssistantPage() {
                   type="text"
                   value={keywordLocation}
                   onChange={(e) => setKeywordLocation(e.target.value)}
-                  placeholder="e.g., Vanuatu"
+                  placeholder="e.g., Ghana"
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-deep-blue/20"
                 />
               </div>

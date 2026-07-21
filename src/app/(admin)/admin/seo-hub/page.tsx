@@ -208,7 +208,7 @@ export default function SEOHubPage() {
   // llms.txt form
   const [llmsForm, setLlmsForm] = useState({
     site_name: 'Rapid Entrepreneurs',
-    site_description: 'Premium web development and digital marketing agency in Vanuatu',
+    site_description: 'Premium web development and digital marketing agency in Ghana',
     key_pages: [
       { title: 'Home', url: '/', description: 'Main landing page' },
       { title: 'Services', url: '/services', description: 'Our digital services' },
@@ -541,7 +541,7 @@ export default function SEOHubPage() {
               site_id: 'pwd',
               task_type: 'content',
               title: `Write article targeting: "${keyword}"`,
-              description: `You're not ranking for "${keyword}" in Vanuatu. Top competitor: ${topCompetitor?.domain} (${topCompetitor?.title}). Create optimized content to outrank them.`,
+              description: `You're not ranking for "${keyword}" in Ghana. Top competitor: ${topCompetitor?.domain} (${topCompetitor?.title}). Create optimized content to outrank them.`,
               priority: 'high',
               status: 'pending',
               ai_generated: true,
@@ -1392,7 +1392,7 @@ ${llmsForm.key_pages.map(p => `- [${p.title}](${p.url}): ${p.description}`).join
                       <div className="bg-gradient-to-br from-gray-50 to-slate-100 border-t border-gray-200 p-6">
                         <div className="flex items-center justify-between mb-4">
                           <h4 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                            🏆 Currently Ranking in Vanuatu
+                            🏆 Currently Ranking in Ghana
                           </h4>
                           <span className="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">
                             Top {Math.min(rankResult.competitors.length, 5)} competitors
@@ -1468,7 +1468,7 @@ ${llmsForm.key_pages.map(p => `- [${p.title}](${p.url}): ${p.description}`).join
                           </h5>
                           <p className="text-sm text-gray-600 mb-3">
                             Create a comprehensive article targeting <strong>&quot;{kw.keyword}&quot;</strong> that&apos;s better than {rankResult.competitors[0]?.domain || 'the competition'}. 
-                            Focus on Vanuatu-specific insights, include more practical examples, and make it more comprehensive.
+                            Focus on Ghana-specific insights, include more practical examples, and make it more comprehensive.
                           </p>
                           <button
                             onClick={() => generateArticle(kw.keyword, rankResult.competitors)}

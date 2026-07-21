@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         endpoint = '/keywords_data/google_ads/search_volume/live';
         requestBody = [{
           keywords: params.keywords,
-          location_code: params.location_code || 2548, // Vanuatu
+          location_code: params.location_code || 2548, // Ghana (2288) or fallback
           language_code: params.language_code || 'en',
         }];
         break;
@@ -197,7 +197,7 @@ export async function POST(request: Request) {
     }
 
     if (action === 'rank_tracker' && data.tasks?.[0]?.result?.[0]?.items) {
-      const targetDomain = params.target_domain || 'pacificwavedigital.com';
+      const targetDomain = params.target_domain || 'rapidentrepreneurs.com';
       const items = data.tasks[0].result[0].items || [];
       const ranking = items.find((item: any) => 
         item.domain?.includes(targetDomain) || item.url?.includes(targetDomain)

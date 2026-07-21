@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Step 2: Generate AI response
-    const systemPrompt = `You are a helpful AI assistant for Pacific Wave Digital's SEO Hub platform. 
+    const systemPrompt = `You are a helpful AI assistant for Rapid Entrepreneurs' SEO Hub platform.
 You help users understand how to use the platform's features including:
 - SEO Hub for tracking keywords and rankings
 - GEO (Generative Engine Optimization) for AI search visibility
