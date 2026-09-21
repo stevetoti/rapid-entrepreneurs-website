@@ -56,13 +56,13 @@ const jsonLd = {
   description: 'Digital solutions company empowering African entrepreneurs and businesses with technology in Ghana and West Africa.',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '14 Independence Avenue, East Legon',
+    streetAddress: 'Ritz Junction, Madina',
     addressLocality: 'Accra',
     addressCountry: 'GH',
   },
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+233-30-274-5000',
+    telephone: '+233-55-430-3269',
     contactType: 'customer service',
     areaServed: 'GH',
     availableLanguage: ['English', 'Twi'],
