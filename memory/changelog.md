@@ -1,5 +1,38 @@
 # Changelog — Rapid Entrepreneurs Website
 
+## 2026-09-21 — [Claude Code] SEO service pages for Ghana commercial keywords (branch seo/service-pages, PR to main)
+
+Mirrors pacific-wave-website PR #3 pattern, adapted to this repo's design language.
+
+- `src/lib/service-pages.ts` (new): typed content model + 7 service page entries
+  targeting DataForSEO-measured Ghana keywords — web-design ("Web Design in
+  Ghana", 390/mo, + "website design Accra"), digital-marketing (50/mo),
+  it-services ("IT Company in Accra", 90/mo), web-development,
+  software-development, ecommerce, mobile-apps. 700–1000 words per page of
+  Ghana-grounded copy (Accra context, MoMo payments, mobile-first users,
+  SME/startup/church/school sectors). No invented clients/testimonials/stats;
+  "fixed quote" language only for pricing.
+- `src/app/services/[slug]/page.tsx` (new): statically generated
+  (`generateStaticParams`, `dynamicParams = false`), unique metadata per page —
+  title is the bare H1 (root layout template appends "| Rapid Entrepreneurs";
+  avoided the doubled-suffix bug PWD had), meta description, canonical, OG.
+  JSON-LD: `Service` schema (provider Rapid Entrepreneurs, areaServed Ghana,
+  footer contact details) + 4-question `FAQPage` schema per page.
+- `src/components/services/ServicePageContent.tsx` (new): shared template using
+  this repo's own components (FadeIn, StaggerContainer, deep-blue/vibrant-orange
+  palette, btn-primary/secondary, section-padding) — hero, intro, benefits grid,
+  process steps, FAQ, related-services cross-link block (each page links the
+  other 6), CTA.
+- `src/app/services/page.tsx`: new "Our Services in Ghana" deep-dive card grid
+  linking all 7 pages from the hub.
+- `src/components/Navbar.tsx`: desktop Services hover dropdown (7 pages + All
+  Services) + mobile sub-links under Services; mobile menu now scrolls.
+- `src/components/Footer.tsx`: services column now links the 7 dedicated pages
+  (kept AI Automation anchor).
+- `src/app/sitemap.ts`: 7 `/services/<slug>` static entries (priority 0.9).
+- Verified: `npx tsc --noEmit` clean, `npm run build` passes, all 7 routes SSG.
+- Not deployed — PR only, per task instructions.
+
 ## 2026-08-30 — [Claude Code] SEO front door: GA4, Search Console verification, dynamic sitemap, article-generator rebrand
 
 - `src/components/GoogleAnalytics.tsx` (new): env-driven GA4 loader via

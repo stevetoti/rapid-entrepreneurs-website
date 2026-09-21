@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import FadeIn from '@/components/motion/FadeIn'
 import StaggerContainer, { StaggerItem } from '@/components/motion/StaggerContainer'
+import { servicePages } from '@/lib/service-pages'
 
 const services = [
   {
@@ -260,6 +261,46 @@ export default function ServicesPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Service Deep-Dives */}
+      <section className="section-padding bg-gradient-to-b from-white to-light-blue">
+        <div className="max-w-7xl mx-auto">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <span className="text-vibrant-orange font-semibold text-sm uppercase tracking-wider">Explore In Depth</span>
+              <h2 className="heading-lg text-deep-blue mt-3 mb-4">Our Services in Ghana</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+                Detailed guides to each service — what we do, how we work, and answers to the questions Ghanaian businesses ask us most.
+              </p>
+            </div>
+          </FadeIn>
+
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {servicePages.map((page) => (
+              <StaggerItem key={page.slug} className="h-full">
+                <Link
+                  href={`/services/${page.slug}`}
+                  className="group block h-full bg-white rounded-2xl p-6 border border-gray-100 shadow-lg hover:border-vibrant-orange/30 hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${page.gradient} flex items-center justify-center mb-4 shadow-lg`}>
+                    <span className="text-2xl">{page.icon}</span>
+                  </div>
+                  <h3 className="font-display font-bold text-lg text-deep-blue mb-2 group-hover:text-vibrant-orange transition-colors">
+                    {page.h1}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{page.cardDescription}</p>
+                  <span className="inline-flex items-center text-vibrant-orange font-semibold text-sm mt-4">
+                    Read more
+                    <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </span>
+                </Link>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
         </div>
       </section>
 

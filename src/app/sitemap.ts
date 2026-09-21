@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { getPublishedPosts } from '@/lib/blog'
+import { servicePages } from '@/lib/service-pages'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://rapidentrepreneurs.com'
@@ -18,6 +19,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
+    // Dedicated SEO service pages (/services/<slug>)
+    ...servicePages.map((service) => ({
+      url: `${baseUrl}/services/${service.slug}`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    })),
     {
       url: `${baseUrl}/about`,
       lastModified: currentDate,
