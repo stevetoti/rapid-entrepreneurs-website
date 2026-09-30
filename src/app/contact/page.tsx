@@ -3,6 +3,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import FadeIn from '@/components/motion/FadeIn'
+import { useFormBotFields, HoneypotField } from '@/components/security/FormBotFields'
+import { TurnstileWidget } from '@/components/security/TurnstileWidget'
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? null
 
 const contactInfo = [
   {
@@ -45,17 +49,41 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
+  const bot = useFormBotFields()
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [attempt, setAttempt] = useState(0)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setIsSubmitting(false)
-    setSubmitted(true)
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
+    setError('')
+    try {
+      const res = await fetch('/api/submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          kind: 'contact',
+          ...formData,
+          website: bot.honeypot,
+          form_started_at: bot.formStartedAt,
+          turnstile_token: turnstileToken,
+        }),
+      })
+      const json = (await res.json().catch(() => ({}))) as { ok?: boolean; detail?: string }
+      if (!res.ok || !json.ok) {
+        setError(json.detail || 'Something went wrong. Please try again or email info@rapidentrepreneurs.com.')
+        return
+      }
+      setSubmitted(true)
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
+    } catch {
+      setError('Something went wrong. Please check your connection and try again.')
+    } finally {
+      setIsSubmitting(false)
+      setAttempt((a) => a + 1)
+      setTurnstileToken(null)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -273,9 +301,19 @@ export default function ContactPage() {
                         />
                       </div>
 
+                      <HoneypotField value={bot.honeypot} onChange={bot.setHoneypot} />
+                      {TURNSTILE_SITE_KEY && (
+                        <TurnstileWidget key={attempt} siteKey={TURNSTILE_SITE_KEY} onVerify={setTurnstileToken} />
+                      )}
+                      {error && (
+                        <p role="alert" className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                          {error}
+                        </p>
+                      )}
+
                       <motion.button
                         type="submit"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || (!!TURNSTILE_SITE_KEY && !turnstileToken)}
                         className="w-full btn-primary text-lg disabled:opacity-70 disabled:cursor-not-allowed"
                         whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                         whileTap={{ scale: isSubmitting ? 1 : 0.98 }}

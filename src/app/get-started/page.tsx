@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { supabase, SITE_ID } from '@/lib/supabase';
+import { useFormBotFields, HoneypotField } from '@/components/security/FormBotFields';
+import { TurnstileWidget } from '@/components/security/TurnstileWidget';
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? null;
 
 type ProjectType = 'website' | 'webapp' | 'mobile' | 'ai' | 'social' | 'full-package' | '';
 
@@ -125,6 +128,9 @@ export default function GetStartedPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const bot = useFormBotFields();
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0);
 
   const totalSteps = 6;
   const progress = (step / totalSteps) * 100;
@@ -154,6 +160,8 @@ export default function GetStartedPage() {
     }
   };
 
+  const canSubmit = canProceed() && !isSubmitting && (!TURNSTILE_SITE_KEY || !!turnstileToken);
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setError('');
@@ -161,10 +169,11 @@ export default function GetStartedPage() {
     try {
       const summary = generateProjectSummary(formData);
 
-      const { error: dbError } = await supabase
-        .from('project_submissions')
-        .insert({
-          site_id: SITE_ID,
+      const res = await fetch('/api/submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          kind: 'project',
           project_type: formData.projectType,
           project_description: formData.projectDescription,
           website_details: {
@@ -192,19 +201,23 @@ export default function GetStartedPage() {
           budget_range: formData.budgetRange,
           timeline: formData.timeline,
           urgency: formData.urgency,
-          contact_name: formData.name,
-          contact_email: formData.email,
-          contact_phone: formData.phone,
-          company_name: formData.company,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
           preferred_contact: formData.preferredContact,
           best_time_to_call: formData.bestTimeToCall,
           additional_notes: formData.additionalNotes,
           ai_summary: summary,
-          status: 'new',
-        });
-
-      if (dbError) {
-        console.error('Database error:', dbError);
+          website: bot.honeypot,
+          form_started_at: bot.formStartedAt,
+          turnstile_token: turnstileToken,
+        }),
+      });
+      const json = (await res.json().catch(() => ({}))) as { ok?: boolean; detail?: string };
+      if (!res.ok || !json.ok) {
+        setError(json.detail || 'Something went wrong. Please try again or contact us directly at 0554303269.');
+        return;
       }
 
       setIsSubmitted(true);
@@ -213,6 +226,8 @@ export default function GetStartedPage() {
       setError('Something went wrong. Please try again or contact us directly at 0554303269.');
     } finally {
       setIsSubmitting(false);
+      setAttempt((a) => a + 1);
+      setTurnstileToken(null);
     }
   };
 
@@ -836,6 +851,13 @@ export default function GetStartedPage() {
                       className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-vibrant-orange/20 focus:border-vibrant-orange transition-all"
                     />
                   </div>
+
+                  <HoneypotField value={bot.honeypot} onChange={bot.setHoneypot} />
+                  {TURNSTILE_SITE_KEY && (
+                    <div>
+                      <TurnstileWidget key={attempt} siteKey={TURNSTILE_SITE_KEY} onVerify={setTurnstileToken} />
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -874,11 +896,11 @@ export default function GetStartedPage() {
             ) : (
               <motion.button
                 onClick={handleSubmit}
-                disabled={!canProceed() || isSubmitting}
-                whileHover={canProceed() && !isSubmitting ? { scale: 1.02 } : {}}
-                whileTap={canProceed() && !isSubmitting ? { scale: 0.98 } : {}}
+                disabled={!canSubmit}
+                whileHover={canSubmit ? { scale: 1.02 } : {}}
+                whileTap={canSubmit ? { scale: 0.98 } : {}}
                 className={`px-8 py-3 rounded-xl font-bold transition-colors flex items-center gap-2 ${
-                  canProceed() && !isSubmitting
+                  canSubmit
                     ? 'bg-vibrant-orange text-white hover:bg-orange-600'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
