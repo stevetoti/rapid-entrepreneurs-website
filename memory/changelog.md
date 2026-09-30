@@ -1,5 +1,57 @@
 # Changelog — Rapid Entrepreneurs Website
 
+## 2026-10-01 — [Claude Code] Form bot defence: contact form + project wizard (commit 2eff938, live)
+
+Applied the `form-bot-defence` skill (`~/.claude/skills/form-bot-defence/`, playbook in
+`_knowledge-base/procedures/BOT-SIGNUP-DEFENCE.md`) after automated spam hit the PWD
+and stevetoti.com forms.
+
+**What was actually broken before this:** the contact form was a simulated success
+(1.5 s timer, nothing sent, nothing stored). The Get started wizard inserted into the
+shared `project_submissions` table straight from the browser with the anon key — zero
+rows ever landed for `site_id = 'rapid-entrepreneurs'` — and `/api/notify-submission`
+was never called by anything, had no `RESEND_API_KEY` on Vercel, was unauthenticated
+(anyone could mail the owners arbitrary content) and interpolated user input into HTML
+unescaped.
+
+- `src/app/api/submissions/route.ts` (new, the only write path for both forms): parse →
+  honeypot + 3 s minimum fill time → content sanity (≥ 8 letters, not link-only) →
+  server-verified Cloudflare Turnstile, fail-closed → durable limits via the shared
+  project's `pwd_rate_limit` (5/hour per IP, 3/hour per email, hashed buckets prefixed
+  `re:`) → service-role insert (`site_id = 'rapid-entrepreneurs'`, nested wizard objects
+  sanitised to primitives) → owner email → `notification_status` sent/failed. Filled
+  honeypot returns a silent `{ok:true}`.
+- `src/lib/security/{bot-signals,turnstile,form-guard}.ts`,
+  `src/components/security/{TurnstileWidget,FormBotFields}.tsx`: skill templates, unchanged.
+- `src/lib/server/submission-email.ts`: HTML-escaped owner email (to steve@ + toti@,
+  override `SUBMISSION_NOTIFICATION_EMAILS`), "Review signals" banner for soft flags
+  (`generated_name`), reply-to the enquirer. `src/lib/server/supabase-admin.ts`:
+  service-role client, server only.
+- `src/app/contact/page.tsx`, `src/app/get-started/page.tsx`: real submit through the
+  route, honeypot field, Turnstile widget (re-keyed after every attempt), submit disabled
+  until a token exists, server error text shown inline.
+- Removed `src/app/api/notify-submission/route.ts` (now 404).
+
+**Vercel env (production):** `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`
+(shared PWD Turnstile widget), `RESEND_API_KEY` = a NEW domain-restricted Resend key
+("rapid-entrepreneurs-website (owner notifications)", sending access for
+digiassistai.com only). Owner mail therefore sends from
+`Rapid Entrepreneurs <noreply@digiassistai.com>` until pacificwavedigital.com or
+rapidentrepreneurs.com is verified in Resend — then set `RESEND_FROM_EMAIL`.
+Preview env vars were NOT added: `vercel env add … preview` only accepts the value via
+`--value` (forbidden — process listings) or an interactive prompt.
+
+**Verified live (deployment rapid-entrepreneurs-website-gj33wudwu):** honeypot → 200
+swallow; fill < 3 s → 400 `too_fast`; digit-only message → 400 `content`; no token → 400
+`captcha` (contact and project kinds); site key present in the /contact chunk;
+`/api/notify-submission` → 404.
+
+**Stephen must add** `rapidentrepreneurs.com`, `www.rapidentrepreneurs.com` and
+`rapid-entrepreneurs-website-git-main-pacificwaveprojects.vercel.app` to the shared
+Turnstile widget (Cloudflare → Turnstile → "Digiassist AI signup") — until then the
+widget shows an error and the server refuses every submission (fail-closed by design).
+Then one real submission on each form to confirm the owner email arrives.
+
 ## 2026-09-21 — [Claude Code] SEO service pages for Ghana commercial keywords (branch seo/service-pages, PR to main)
 
 Mirrors pacific-wave-website PR #3 pattern, adapted to this repo's design language.
