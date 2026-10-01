@@ -46,7 +46,14 @@ swallow; fill < 3 s → 400 `too_fast`; digit-only message → 400 `content`; no
 `captcha` (contact and project kinds); site key present in the /contact chunk;
 `/api/notify-submission` → 404.
 
-**Stephen must add** `rapidentrepreneurs.com`, `www.rapidentrepreneurs.com` and
+**2026-10-02 update:** the first shared Turnstile widget was at 9 of its 10-hostname cap, so
+Stephen created a second widget ("PWD sites 2": rapidentrepreneurs.com, www.rapidentrepreneurs.com,
+vanuway.com, www.vanuway.com). Its keys replaced the first widget's on this Vercel project
+(production), redeployed `rapid-entrepreneurs-website-r0pdikmjn`; verified the new site key is
+baked into the /contact chunk and the widget renders the "Verify you are human" checkbox with no
+error. Local copy of the widget-2 keys: `TURNSTILE2_*` in the Digiassist AI `.env.local`.
+
+**Superseded by the update above —** originally: Stephen must add `rapidentrepreneurs.com`, `www.rapidentrepreneurs.com` and
 `rapid-entrepreneurs-website-git-main-pacificwaveprojects.vercel.app` to the shared
 Turnstile widget (Cloudflare → Turnstile → "Digiassist AI signup") — until then the
 widget shows an error and the server refuses every submission (fail-closed by design).
