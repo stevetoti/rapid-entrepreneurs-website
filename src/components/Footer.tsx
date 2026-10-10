@@ -29,7 +29,7 @@ const footerLinks = {
 }
 
 const globalNetwork = [
-  { flag: '🇻🇺', name: 'Pacific Wave Digital', location: 'Vanuatu (HQ)', url: 'https://pacificwavedigital.com', tagline: 'Digital Innovation for the Pacific', regions: 'Covers: Vanuatu · Pacific Islands · Oceania', logo: '/images/logos/pwd-logo.jpg' },
+  { flag: '🇻🇺', name: 'Pacific Wave Digital', location: 'Vanuatu', url: 'https://pacificwavedigital.com', tagline: 'Digital Innovation for the Pacific', regions: 'Covers: Vanuatu · Pacific Islands · Oceania', logo: '/images/logos/pwd-logo.jpg' },
   { flag: '🇺🇸', name: 'Global Digital Prime', location: 'Delaware, USA', url: 'https://globaldigitalprime.com', tagline: 'Enterprise Digital Solutions', regions: 'Covers: United States · Americas · Global Enterprise', logo: '/images/logos/gdp-logo.jpg' },
   { flag: '🇬🇭', name: 'Rapid Entrepreneurs', location: 'Ghana', url: 'https://rapidentrepreneurs.com', tagline: 'Empowering African Business', regions: 'Covers: Ghana · West Africa · African Markets', logo: '/images/logos/rapid-logo.jpg' },
   { flag: '🇮🇩', name: 'Global Digital Prime', location: 'Indonesia', url: 'https://globaldigitalprime.com', tagline: 'Southeast Asia Operations', regions: 'Covers: Indonesia · Southeast Asia · Asia-Pacific', logo: '/images/logos/gdp-logo.jpg' },
@@ -285,6 +285,16 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-gray-500 text-sm text-center md:text-left">
               © {new Date().getFullYear()} Rapid Entrepreneurs. All rights reserved.
+              <span className="block mt-1">
+                <a
+                  href="https://www.globaldigitalprime.com"
+                  target="_blank"
+                  rel="noopener"
+                  className="hover:text-vibrant-orange transition-colors"
+                >
+                  A Global Digital Prime group company
+                </a>
+              </span>
             </p>
             <p className="text-gray-500 text-sm flex items-center gap-2">
               Crafted with <span className="text-vibrant-orange">❤️</span> in Accra, Ghana 🇬🇭

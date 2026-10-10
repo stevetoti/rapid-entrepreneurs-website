@@ -1,5 +1,16 @@
 # Changelog — Rapid Entrepreneurs Website
 
+## 2026-10-10 — [Claude Code] Footer: Global Digital Prime group link
+
+Stephen confirmed (2026-10-10) that Global Digital Prime, Inc. (Delaware, USA) is the main
+company of the group and Rapid Entrepreneurs is a group company. `src/components/Footer.tsx`
+bottom bar now shows "A Global Digital Prime group company" under the copyright line, linking
+to https://www.globaldigitalprime.com (`target="_blank" rel="noopener"`, no nofollow). The
+"Our Global Network" card label for Pacific Wave Digital was `location: 'Vanuatu (HQ)'`; that
+simple footer label now reads `'Vanuatu'` so the footer no longer implies PWD is the group HQ.
+No legal pages, legal names or schema changed. tsc + `next build` pass. Released by push to
+main (Git production).
+
 ## 2026-10-01 — [Claude Code] Form bot defence: contact form + project wizard (commit 2eff938, live)
 
 Applied the `form-bot-defence` skill (`~/.claude/skills/form-bot-defence/`, playbook in
